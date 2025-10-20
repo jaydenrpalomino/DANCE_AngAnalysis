@@ -1,0 +1,50 @@
+Information for each year of data -- JRP
+
+
+Alpha.dat
+2019: jr_alpha_update.dat
+2018: Alpha_107982.dat
+
+Gamma.dat
+2019: Gamma_113158.dat
+2018: Gamma_109430.dat 
+
+stage0
+2019: stage0_caen2018.cfg
+2018: stage0_caen2018.cfg
+
+stage1.cfg
+2019: stage1_Cd114.cfg
+2018: stage1_Cd114.cfg
+
+Retrigger.dat
+2019: Retrigger_113341.dat
+2018: Retrigger_071918.dat
+
+Pileup.dat
+2019: Pileup2019.dat
+2018: Pileup2018.dat
+
+Raw Data Location
+2019: /data/lansce/8317-A/raw_data
+2018: /data/lansce/7862-A/raw_data
+
+DanceMap.txt
+2019: DanceMap_7Nov18.txt
+2018: DanceMap_23Nov15.txt
+
+TMatrix.txt
+2019: TMatrix_2019.txt
+2018: TMatrix_57Fe.txt
+
+Alpha Calibration Parameters
+2019 onward: ftot[j]->SetParLimits(0,0.00030,0.00042);
+2018: ftot[j]->SetParLimits(0,0.00021,0.00035);
+
+DANCE_Alpha_Database.root
+2019: DANCE_Alpha_Database_114271_114271.root
+2018: DANCE_Alpha_Database_107980_107982.root
+
+quadratic_terms.txt
+2019: quadratic_terms_2019.txt
+2018: quadratic_terms_2018.txt

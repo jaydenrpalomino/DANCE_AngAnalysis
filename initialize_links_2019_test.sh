@@ -1,0 +1,56 @@
+####
+#
+# For first time setup of symbolic links
+# Jayden Ratcliffe for Data in 2019
+#
+####
+
+#for changing symbolic links of file paths in DANCE Analysis
+unlink stage0_bin
+ln -s /data2/lansce/jr2514/stage0_bin/alphagate_test stage0_bin
+unlink stage0_root
+ln -s /data2/lansce/jr2514/stage0_root/alphagate_test stage0_root
+unlink stage1_bin
+ln -s /data2/lansce/jr2514/stage1_bin/alphagate_test stage1_bin
+unlink stage1_root
+ln -s /data2/lansce/jr2514/stage1_root/alphagate_test stage1_root
+unlink stage0_simulated
+ln -s /data2/lansce/jr2514/stage0_simulated stage0_simulated
+unlink stage0_bin_automated
+ln -s /data2/lansce/jr2514/stage0_bin_automated stage0_bin_automated
+
+#need to link directories in Alpha Calibrator
+cd ../DANCE_Alpha_Calibrator
+
+unlink ParamOutput
+ln -s /data2/lansce/jr2514/Alpha_Calibrator_ParamOutput/TEST_chisq/ ParamOutput
+unlink RootOutput
+ln -s /data2/lansce/jr2514/Alpha_Calibrator_RootOutput/TEST_chisq/ RootOutput
+
+#for calibrations and gates
+#Calibrations is its own folder on the same level as DANCE_Analysis
+cd ../Calibrations
+unlink calib_ideal.dat
+ln -s calib_ideal_2019.dat calib_ideal.dat
+
+cd ../DANCE_Analysis/Gates
+unlink Alpha.dat
+#ln -s Alpha_116470.dat Alpha.dat
+#ln -s Alpha_112775.dat Alpha.dat
+#the following is a test gate drawn from run 113391
+ln -s jr_alpha_update.dat Alpha.dat 
+
+
+unlink Gamma.dat
+ln -s Gamma_113158.dat Gamma.dat
+
+unlink Retrigger.dat
+ln -s Retrigger_113341.dat Retrigger.dat
+#ln -s Retrigger_113210.dat Retrigger.dat
+cd ..
+
+#Need to have a stage1.cfg file in here too
+unlink stage1.cfg
+ln -s cfg_files/stage1_Cd114.cfg stage1.cfg
+
+
