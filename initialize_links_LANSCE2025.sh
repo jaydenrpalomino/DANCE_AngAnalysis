@@ -1,61 +1,67 @@
+#!/bin/bash
+#### 
+# For first-time setup of symbolic links
+# Jayden R. Palomino for Data in 2025
 ####
-#
-# For first time setup of symbolic links
-# Jayden R Palomino for Data in 2025
-#
-####
 
-#for changing symbolic links of file paths in DANCE Analysis
-unlink stage0_bin
-ln -s /mnt/hygelac-data/30/dance/jr2514/ang/stage0_bin stage0_bin
-unlink stage0_root
-ln -s /mnt/hygelac-data/30/dance/jr2514/ang/stage0_root stage0_root
-unlink stage1_root
-ln -s /mnt/hygelac-data/30/dance/jr2514/ang/stage1_root stage1_root
-unlink stage0_simulated
-ln -s /mnt/hygelac-data/30/dance/jr2514/ang/stage0_simulated stage0_simulated
-unlink stage1.cfg
-ln -s cfg_files/stage1_La139.cfg stage1.cfg
-unlink stage0.cfg
-ln -s cfg_files/stage0_caen2018.cfg stage0.cfg
-unlink raw_data
-ln -s /mnt/hygelac-data/24/dance/caen2018 raw_data
+# Define a helper function for linking safely
+safe_link() {
+    local target=$1
+    local linkname=$2
 
+    # If symlink or file exists, unlink/remove it
+    if [ -L "$linkname" ] || [ -e "$linkname" ]; then
+        echo "Unlinking existing: $linkname"
+        unlink "$linkname"
+    fi
 
-cd Config
-unlink DanceMap.txt
-ln -s DanceMap_au2019.txt DanceMap.txt
-unlink TMatrix.txt
-ln -s TMatrix_2019.txt TMatrix.txt
+    # If target directory doesn't exist, make it
+    if [[ "$target" == */* ]]; then
+        local parent_dir
+        parent_dir=$(dirname "$target")
+        if [ ! -d "$parent_dir" ]; then
+            echo "Creating directory: $parent_dir"
+            mkdir -p "$parent_dir"
+        fi
+    fi
 
-#need to link directories in Alpha Calibrator
-cd ../../DANCE_Alpha_Calibrator/DANCE_Alpha_Database
-unlink DANCE_Alpha_Database.root
-ln -s DANCE_Alpha_Database_113391_113393.root DANCE_Alpha_Database.root
+    # Create symlink if target exists
+    if [ -e "$target" ]; then
+        ln -s "$target" "$linkname"
+        echo "Linked $linkname → $target"
+    else
+        echo "⚠️ Warning: target not found: $target"
+    fi
+}
 
-#for calibrations and gates
-#Calibrations is its own folder on the same level as DANCE_Analysis
-cd ../../Calibrations
-unlink calib_ideal.dat
-ln -s calib_ideal_2019.dat calib_ideal.dat
+# --- Main symbolic link setup ---
 
-cd ../DANCE_Analysis/Gates
-unlink Alpha.dat
-ln -s Alpha_au2019.dat Alpha.dat
-#ln -s Alpha_112775.dat Alpha.dat
-#the following is a test gate drawn from run 113391
-#ln -s Alpha_109430.dat Alpha.dat 
-#ln -s Alpha_107982.dat Alpha.dat
+safe_link /mnt/hygelac-data/30/dance/jr2514/ang/stage0_bin stage0_bin
+safe_link /mnt/hygelac-data/30/dance/jr2514/ang/stage0_root stage0_root
+safe_link /mnt/hygelac-data/30/dance/jr2514/ang/stage1_root stage1_root
+safe_link /mnt/hygelac-data/30/dance/jr2514/ang/stage0_simulated stage0_simulated
+safe_link cfg_files/stage1_La139.cfg stage1.cfg
+safe_link cfg_files/stage0_caen2018.cfg stage0.cfg
+safe_link /mnt/hygelac-data/24/dance/caen2018 raw_data
 
+# --- Config directory ---
+cd Config || exit
+safe_link DanceMap_au2019.txt DanceMap.txt
+safe_link TMatrix_2019.txt TMatrix.txt
 
-unlink Gamma.dat
-ln -s Gamma_au2019.dat Gamma.dat
+# --- Alpha Calibrator ---
+cd ../../DANCE_Alpha_Calibrator/DANCE_Alpha_Database || exit
+safe_link DANCE_Alpha_Database_113391_113393.root DANCE_Alpha_Database.root
 
-unlink Retrigger.dat
-ln -s Retrigger_au2019.dat Retrigger.dat
-#ln -s Retrigger_113210.dat Retrigger.dat
+# --- Calibrations ---
+cd ../../Calibrations || exit
+safe_link calib_ideal_2019.dat calib_ideal.dat
 
-unlink Pileup.dat
-ln -s Pileup_au2019.dat Pileup.dat
+# --- Gates ---
+cd ../DANCE_Analysis/Gates || exit
+safe_link Alpha_au2019.dat Alpha.dat
+safe_link Gamma_au2019.dat Gamma.dat
+safe_link Retrigger_au2019.dat Retrigger.dat
+safe_link Pileup_au2019.dat Pileup.dat
 
-
+echo "✅ All symbolic links configured."
