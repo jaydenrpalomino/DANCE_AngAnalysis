@@ -53,11 +53,28 @@ require_here() {
   fi
 }
 
+# NEW: hard requirement on DANCE_Alpha_Calibrator being present
+require_alpha_calibrator() {
+  if [ ! -d "../DANCE_Alpha_Calibrator" ] || [ ! -d "../DANCE_Alpha_Calibrator/DANCE_Alpha_Database" ]; then
+    echo "❌ Missing dependency: ../DANCE_Alpha_Calibrator (and/or its DANCE_Alpha_Database)."
+    echo "   This repository is required before linking."
+    echo "   Get it here: https://github.com/lansce-nuclear-physics/DANCE_Alpha_Calibrator"
+    echo
+    echo "   From the parent directory of DANCE_Analysis, run:"
+    echo "     cd .."
+    echo "     git clone https://github.com/lansce-nuclear-physics/DANCE_Alpha_Calibrator.git"
+    echo
+    echo "   Then re-run this script from DANCE_Analysis/."
+    exit 1
+  fi
+}
+
 # -----------------------
 # Start
 # -----------------------
 echo "=== DANCE Analysis symlink setup (cwd: $PWD) ==="
 require_here
+require_alpha_calibrator   # <-- added: stop early if missing
 
 # Ensure current-dir Gates exists (your specific ask)
 ensure_dir "./Gates"
@@ -100,5 +117,4 @@ safe_link Retrigger_au2019.dat Retrigger.dat
 safe_link Pileup_au2019.dat    Pileup.dat
 popd >/dev/null
 
-echo "🎉 Done. All links set up. ('Gates' verified in current directory.)"
-
+echo "🎉 Done. All links set up."
