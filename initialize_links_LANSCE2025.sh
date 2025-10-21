@@ -89,7 +89,7 @@ popd >/dev/null
 
 # ---- ../Calibrations ----
 pushd ../Calibrations >/dev/null
-safe_link calib_ideal_2019.dat  calib_ideal.dat
+safe_link ../DANCE_Analysis/calib_ideal_2019.dat  calib_ideal.dat
 popd >/dev/null
 
 # ---- ./Gates (ensure local Gates only) ----
@@ -101,3 +101,4 @@ safe_link Pileup_au2019.dat    Pileup.dat
 popd >/dev/null
 
 echo "🎉 Done. All links set up. ('Gates' verified in current directory.)"
+
