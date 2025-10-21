@@ -18,8 +18,11 @@ unlink stage1.cfg
 ln -s cfg_files/stage1_La139.cfg stage1.cfg
 unlink stage0.cfg
 ln -s cfg_files/stage0_caen2018.cfg stage0.cfg
+unlink stage1_simulated.cfg
+ln -s cfg_files/stage1_simulated.cfg stage1_simulated.cfg
 unlink raw_data
 ln -s mnt/hygelac-data/24/dance/caen2018 raw_data
+
 
 cd Config
 unlink DanceMap.txt
