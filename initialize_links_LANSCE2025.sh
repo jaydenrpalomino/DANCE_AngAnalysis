@@ -74,7 +74,7 @@ require_alpha_calibrator() {
 # -----------------------
 echo "=== DANCE Analysis symlink setup (cwd: $PWD) ==="
 require_here
-require_alpha_calibrator   # <-- added: stop early if missing
+require_alpha_calibrator   # <-- added previously: stop early if missing
 
 # Ensure current-dir Gates exists (your specific ask)
 ensure_dir "./Gates"
@@ -100,11 +100,15 @@ safe_link TMatrix_2019.txt     TMatrix.txt
 popd >/dev/null
 
 # ---- ../DANCE_Alpha_Calibrator/DANCE_Alpha_Database ----
+# (Double-check/create the directory before pushd, just in case.)
+ensure_dir "../DANCE_Alpha_Calibrator/DANCE_Alpha_Database"
 pushd ../DANCE_Alpha_Calibrator/DANCE_Alpha_Database >/dev/null
 safe_link DANCE_Alpha_Database_113391_113393.root  DANCE_Alpha_Database.root
 popd >/dev/null
 
 # ---- ../Calibrations ----
+# *** THIS FIX: create ../Calibrations before pushd ***
+ensure_dir "../Calibrations"
 pushd ../Calibrations >/dev/null
 safe_link ../DANCE_AngAnalysis/calib_ideal_2019.dat  calib_ideal.dat
 popd >/dev/null
