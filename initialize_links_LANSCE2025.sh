@@ -106,7 +106,7 @@ popd >/dev/null
 
 # ---- ../Calibrations ----
 pushd ../Calibrations >/dev/null
-safe_link ../DANCE_Analysis/calib_ideal_2019.dat  calib_ideal.dat
+safe_link ../DANCE_AngAnalysis/calib_ideal_2019.dat  calib_ideal.dat
 popd >/dev/null
 
 # ---- ./Gates (ensure local Gates only) ----
