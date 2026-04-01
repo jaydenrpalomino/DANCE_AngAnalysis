@@ -85,9 +85,9 @@ ensure_dir /data2/lansce/jr2514
 ensure_dir /data2/lansce/jr2514/raw_data
 
 # ---- Top-level links (current dir) ----
-safe_link /data2/lansce/jr2514/stage0_bin/test        stage0_bin
-safe_link /data2/lansce/jr2514/stage0_root/test       stage0_root
-safe_link /data2/lansce/jr2514/stage1_root/test       stage1_root
+safe_link /data2/lansce/jr2514/stage0_bin      stage0_bin
+safe_link /data2/lansce/jr2514/stage0_root       stage0_root
+safe_link /data2/lansce/jr2514/stage1_root       stage1_root
 safe_link /data2/lansce/jr2514/stage0_simulated  stage0_simulated
 safe_link /data2/lansce/jr2514/raw_data          raw_data
 
