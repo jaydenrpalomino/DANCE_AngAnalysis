@@ -150,6 +150,7 @@ typedef struct{
 
 typedef struct {
   double timestamp;        // timestamp
+  double wfintegral;          //wfratio added
   uint16_t Ns;               // number of samples in waveform
   uint16_t Ifast;            // short integral
   uint16_t Islow;            // long integral
@@ -175,9 +176,16 @@ typedef struct {
   uint16_t Islow;            // long integral
   double timestamp;                // Time-Of-Flight in ns
   uint8_t ID;                // ID from DANCE Map 0 to 161 are dance, monitors and T0 defined in global.h
-  //put normalized waveform integral in here if we ever break backwards compatibility
 } DEVT_STAGE1;
 
+//Output of stage 0 bin
+typedef struct {
+  double timestamp;                // Time-Of-Flight in ns
+  double wfintegral;                // wf integral
+  uint16_t Ifast;            // short integral
+  uint16_t Islow;            // long integral
+  uint8_t ID;                // ID from DANCE Map 0 to 161 are dance, monitors and T0 defined in global.h  
+} DEVT_STAGE1_WF;
 
 // DANCE event
 typedef struct{
@@ -253,6 +261,7 @@ typedef struct{
   //Bools
   bool Read_Binary;
   bool Write_Binary;
+  bool WF_Integral;
   bool Read_Simulation;
   bool HAVE_Threshold;
   bool FitTimeDev;

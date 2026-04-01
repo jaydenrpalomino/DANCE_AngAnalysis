@@ -76,7 +76,6 @@
 
 
 //Status indicators
-//#define EventLimit 10000000 //Event limit reduced for ROOT Tree method of angular analysis
 #define EventLimit 4294967295  //Event limit to shut off the unpacker (2^32 -1)
 //#define EventLimit 50000000  //Event limit to shut off the unpacker (2^32 -1)
 //#define EventLimit 1000000  //Event limit to shut off the unpacker (2^32 -1)
@@ -142,10 +141,11 @@
 #define	NeutronE_To 5e6 //Neutron energy to [eV]
 #define	NeutronE_BinsPerDecade 200.0 // Number of neutron energy bins per decade
 
+
 #define NeutronE_From_Angular 0.05 // Neutron energy from [eV] specifically for angular analysis histograms -- used to limit En to resonance region // only make sense on resonance
 #define NeutronE_To_Angular 5e3 // Neutron energy to [eV] specifically for angular analysis histograms -- used to limit En to resonance region
 #define NeutronE_BinsPerDecade_Angular 200.0
-
+//#define angleBin_width 8.0
 
 #define	GammaE_From 0.0 //Gamma energy [MeV] - low limit
 #define	GammaE_To 20.0 //Gamma energy [MeV] - upper limit
