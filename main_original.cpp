@@ -176,7 +176,6 @@ int main(int argc, char *argv[]) {
   input_params.DEvent_Blocking_Time=0;
   input_params.Read_Binary=false;
   input_params.Write_Binary=false;
-  input_params.WF_Integral=false;
   input_params.Read_Simulation=false;
   input_params.SingleSubrun=false;
   input_params.Coincidence_Window=10;
@@ -247,7 +246,7 @@ int main(int argc, char *argv[]) {
     DANCE_Success("Main",mmsg.str());
 
     string item;
-    while(!cfgf.eof()) {
+    while(!cfgf.eof()) { //order does not matter in cfg file
       cfgf>>item;
       if(item.compare("Coincidence_Window") == 0) {
       	cfgf>>input_params.Coincidence_Window;
@@ -257,10 +256,7 @@ int main(int argc, char *argv[]) {
       }
       if(item.compare("Write_Binary") == 0) {
 	cfgf>>input_params.Write_Binary;
-      }
-      if(item.compare("WF_Integral") == 0) {
-        cfgf>>input_params.WF_Integral;
-      } 
+      }      
       if(item.compare("Read_Simulation") == 0) {
 	cfgf>>input_params.Read_Simulation;
       }      
@@ -291,17 +287,12 @@ int main(int argc, char *argv[]) {
 	  cfgf >> input_params.QGates[eye];
 	}
       }
-
-
     if(item.compare("NEnResGates_Ang") == 0) {
 	cfgf>>input_params.NEnResGates_Ang;
 	for(int eye=0; eye<2*input_params.NEnResGates_Ang; eye++) {
 	  cfgf >> input_params.EnResGates_Ang[eye];
-
 	}
       }
-
-
       if(item.compare("NIsomers") == 0) {
 	cfgf>>input_params.NIsomers;
 	for(int eye=0; eye<input_params.NIsomers; eye++) {
@@ -353,7 +344,6 @@ int main(int argc, char *argv[]) {
     else {
       input_params.QGatedSpectra = false;
     }
-    
 
     //Set the bool for EnResGates
     if(input_params.NEnResGates_Ang>0) {
@@ -362,10 +352,6 @@ int main(int argc, char *argv[]) {
     else {
       input_params.EnResGated_Ang_Spectra = false;
     }
-
-
-
-
 
     //Set the bool for Isomers
     if(input_params.NIsomers>0) {
@@ -383,7 +369,6 @@ int main(int argc, char *argv[]) {
     cout<<"Coincidence Window: "<<input_params.Coincidence_Window<<endl;
     cout<<"Read Binary: "<<input_params.Read_Binary<<endl;
     cout<<"Write Binary: "<<input_params.Write_Binary<<endl;
-    cout<<"Read/Write WF Integral: "<<input_params.WF_Integral<<endl;
     cout<<"Read Simulation: "<<input_params.Read_Simulation<<endl;
     if(input_params.Read_Simulation) {
       cout<<"Simulated File Name: "<<input_params.Simulation_File_Name<<endl;
@@ -399,7 +384,7 @@ int main(int argc, char *argv[]) {
     cout<<"Data Format: "<<input_params.DataFormat<<endl;
     cout<<"Number of Q-Value Gates: "<<input_params.NQGates<<endl;
 
-   for(int eye=0; eye<input_params.NQGates; eye++) {
+    for(int eye=0; eye<input_params.NQGates; eye++) {
       cout<<"Q-Value Gate "<<eye<<": "<<input_params.QGates[2*eye]<<" to "<<input_params.QGates[2*eye+1]<<" MeV"<<endl;
     }
 
@@ -567,14 +552,9 @@ int main(int argc, char *argv[]) {
     stringstream binaryrunname;
     binaryrunname.str();
     binaryrunname << pathtodata << "/stage0_run_" << RunNum << ".bin";
-    if(input_params.WF_Integral)  //different name of binary file when reading WF Integral
-      binaryrunname << "23";
-      
     stringstream binarysubrunname;
     binarysubrunname.str();
     binarysubrunname << pathtodata << "/stage0_run_" << RunNum << "_" <<input_params.NumSubRun<< ".bin";
-    if(input_params.WF_Integral) //different name of binary subrun file when reading WF Integral
-      binarysubrunname << "23";
     mmsg.str("");
     mmsg<<"Checking for: "<<binarysubrunname.str()<<endl;
     DANCE_Info("Main",mmsg.str());
@@ -594,9 +574,7 @@ int main(int argc, char *argv[]) {
         input_params.NumSubRun++;
         gz_queue.push(gz_in);
         binarysubrunname.str("");
-	binarysubrunname << pathtodata << "/stage0_run_" << RunNum << "_" <<input_params.NumSubRun<< ".bin";
-	if(input_params.WF_Integral)
-       	  binarysubrunname << "23";
+        binarysubrunname << pathtodata << "/stage0_run_" << RunNum << "_" <<input_params.NumSubRun<< ".bin";
         gz_in=gzopen(binarysubrunname.str().c_str(),"rb");
       } 
     }
@@ -659,7 +637,7 @@ int main(int argc, char *argv[]) {
     
     stringstream simulationrunname;
     simulationrunname.str();
-    simulationrunname << STAGE0_SIM << "/"<< input_params.Simulation_File_Name <<".bin23";
+    simulationrunname << STAGE0_SIM << "/"<< input_params.Simulation_File_Name <<".bin";
 
     mmsg.str("");
     mmsg<<"Checking for: "<<simulationrunname.str()<<endl;

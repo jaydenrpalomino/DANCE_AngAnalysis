@@ -1,4 +1,4 @@
-\
+
 ////////////////////////////////////////////////////////////////////////
 //                                                                    //
 //   Software Name: DANCE Data Acquisition and Analysis Package       //
@@ -62,8 +62,7 @@ std::vector<DEVT_BANK> BM_eventvector;      //Vector to store beam monitor event
 std::vector<DEVT_BANK> T0_eventvector;      //Vector to store T0 monitor events for analysis
 
 std::ofstream outputbinfile;                //Ouput binary file
-DEVT_STAGE1_WF devt_out_wf;                 //Ouput struct for binaries with WF integral
-DEVT_STAGE1 devt_out;                       //Ouput struct for binaries without WF integral
+DEVT_STAGE1 devt_out;                       //Ouput struct
 
 //Graphs of TOF Corrections
 TGraph *gr_DANCE_TOF_Corr;
@@ -184,22 +183,19 @@ int Initialize_Eventbuilder(Input_Parameters input_params) {
     
     //stage0 
     if(input_params.Analysis_Stage==0) {
-      outfilename << STAGE0_BIN;
-      outfilename <<"/stage0_run_";   
+      outfilename << STAGE0_BIN; 
+      outfilename <<"/stage0_run_";
     }
     //stage1
     if(input_params.Analysis_Stage==1) {
       outfilename << STAGE1_BIN;
       outfilename <<"/stage1_run_";
-
     }
     outfilename << input_params.RunNumber;
     if (input_params.SingleSubrun){
       outfilename << "_" << input_params.SubRunNumber; 
     }
     outfilename << ".bin";
-    if(input_params.WF_Integral)
-      outfilename << "23";  // With WF ratio
     
     outputbinfile.open(outfilename.str().c_str(), ios::out | ios::binary);
     
@@ -247,21 +243,15 @@ int Build_Events(deque<DEVT_BANK> &datadeque, Input_Parameters input_params, Ana
 
       //First write the data to the output binary file if needed
       if(input_params.Write_Binary==1 && outputbinfile.is_open()) {
-	if(input_params.WF_Integral){      	//if specified in cfg file, writing WF Integral to binaries
-	  devt_out_wf.Ifast = datadeque[0].Ifast;
-	  devt_out_wf.Islow = datadeque[0].Islow;
-       	  devt_out_wf.timestamp = datadeque[0].timestamp;
-	  devt_out_wf.wfintegral = datadeque[0].wfintegral;
-       	  devt_out_wf.ID = datadeque[0].ID;
-          outputbinfile.write(reinterpret_cast<char*>(&devt_out_wf),sizeof(DEVT_STAGE1_WF));
-	}
-	else{                                  //not writing WF Integral to binaries
-	  devt_out.Ifast = datadeque[0].Ifast;
-          devt_out.Islow = datadeque[0].Islow;
-          devt_out.timestamp = datadeque[0].timestamp;
-          devt_out.ID = datadeque[0].ID;
-          outputbinfile.write(reinterpret_cast<char*>(&devt_out),sizeof(DEVT_STAGE1));
-	}
+	devt_out.Ifast = datadeque[0].Ifast;
+	devt_out.Islow = datadeque[0].Islow;
+	devt_out.timestamp = datadeque[0].timestamp;
+  //if (devt_out.timestamp > 0) {
+        //cout << "Non-zero timestamp: " << devt_out.timestamp << endl;
+    //}
+	devt_out.ID = datadeque[0].ID;
+  //cout << "datadeque[0].ID =  " << datadeque[0].ID << endl;
+	outputbinfile.write(reinterpret_cast<char*>(&devt_out),sizeof(DEVT_STAGE1));
 	analysis_params->entries_written_to_binary++;
       }    
       
@@ -752,6 +742,7 @@ int Create_Eventbuilder_Histograms(Input_Parameters input_params) {
   hTimeBetweenCrystals_LongShortRatio = new TH2F("TimeBetweenCrystals_SlowFastRatio","TimeBetweenCrystals_SlowFastRatio",1250,0,10000,1000,0,100);
 
   hFastSlowRatio_ID = new TH2F("FastSlowRatio_ID","FastSlowRatio_ID",1000,0,1,162,0,162);
+
 
   //Detector Load
 #ifdef Histogram_DetectorLoad
